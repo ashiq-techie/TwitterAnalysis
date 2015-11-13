@@ -1,0 +1,23 @@
+package HashtagAnalysis;
+import java.io.IOException;
+import java.util.StringTokenizer;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.commons.lang.StringUtils;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+public class HashMapper extends Mapper<Object, Text, Text, IntWritable> { 
+    private IntWritable one = new IntWritable(1);
+    private Text data = new Text();
+    public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
+	    	String[] tweetArray = value.toString().split(";");
+		String[] hashtagArray = tweetArray[2].split(" ");
+		for(String hashtag : hashtagArray){
+		data.set(hashtag);
+		context.write(data, one);
+		}
+    }
+}
